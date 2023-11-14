@@ -1,3 +1,4 @@
+use anyhow::{Context, Result};
 use clap::Parser;
 
 /// 指定したファイルからパターンに合致した行を探す。
@@ -12,16 +13,17 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let args = Cli::parse();
 
-    // 引数で受け取ったファイルを読み込む
-    let content = std::fs::read_to_string(&args.path).expect("could not read file.");
+    let content = std::fs::read_to_string(&args.path)
+        .with_context(|| format!("Error reading `{}`", args.path.display()))?;
+
     for line in content.lines() {
         if line.contains(&args.pattern) {
             println!("{}", line);
         }
     }
 
-    // println!("pattern: {:?}, path: {:?}", args.pattern, args.path);
+    Ok(())
 }
