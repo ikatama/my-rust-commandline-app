@@ -6,10 +6,8 @@ use clap::Parser;
 #[derive(Parser)]
 struct Cli {
     /// 探すパターン
-    #[arg(short = 'p', long = "pattern", default_value_t = String::from("test"))]
     pattern: String,
     /// パターンを探す対象のファイルパス
-    #[arg(long = "path")]
     path: std::path::PathBuf,
 }
 
