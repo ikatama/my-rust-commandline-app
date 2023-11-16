@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::{Context, Ok, Result};
 use clap::Parser;
 
 /// 指定したファイルからパターンに合致した行を探す。
@@ -19,11 +19,6 @@ fn main() -> Result<()> {
     let content = std::fs::read_to_string(&args.path)
         .with_context(|| format!("Error reading `{}`", args.path.display()))?;
 
-    for line in content.lines() {
-        if line.contains(&args.pattern) {
-            println!("{}", line);
-        }
-    }
-
+    let _ = grrs::find_matches(&content, &args.pattern, &mut std::io::stdout());
     Ok(())
 }
